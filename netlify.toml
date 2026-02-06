@@ -1,16 +1,9 @@
 [build]
   command = "cd frontend && npm install && npm run build"
-  functions = "backend"
   publish = "frontend/.next"
 
 [build.environment]
   NODE_VERSION = "18.17.0"
-  NPM_VERSION = "9.6.7"
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
 
 [[redirects]]
   from = "/*"
