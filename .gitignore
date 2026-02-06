@@ -12,3 +12,6 @@ build/
 *.swo
 ~*
 .vscode/
+*.env
+*.env.local
+*.env.*.local
