@@ -1,20 +1,13 @@
 [build]
-  command = "cd frontend && npm install && npm run build"
+  command = "npm --version && node --version && cd frontend && npm ci && npm run build"
   publish = "frontend/.next"
 
 [build.environment]
-  NODE_VERSION = "18.17.0"
+  NODE_VERSION = "20.11.0"
+  NPM_VERSION = "10.2.4"
+  NODE_ENV = "production"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[context.production.environment]
-  NEXT_PUBLIC_API_URL = "https://bixfind-api.herokuapp.com"
-
-[context.deploy-preview.environment]
-  NEXT_PUBLIC_API_URL = "http://localhost:5000"
-
-[context.branch-deploy.environment]
-  NEXT_PUBLIC_API_URL = "http://localhost:5000"
