@@ -1,5 +1,5 @@
 [build]
-  command = "npm --version && node --version && cd frontend && npm ci && npm run build"
+  command = "npm --version && node --version && cd frontend && npm install && npm run build"
   publish = "frontend/.next"
 
 [build.environment]
