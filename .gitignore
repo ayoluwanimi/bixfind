@@ -16,3 +16,5 @@ build/
 *.env.local
 *.env.*.local
 frontend/tsconfig.json
+frontend/tsconfig.json
+backend/dist/
