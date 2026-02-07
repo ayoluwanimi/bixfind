@@ -1,13 +1,17 @@
 {
-  "name": "bixfind",
+  "name": "bixfind-marketplace",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Multi-vendor service marketplace",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "build:backend": "cd backend && npm run build",
+    "start:backend": "cd backend && npm start"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
 }

@@ -1,31 +1,9 @@
 {
-  "services": [
-    {
-      "name": "bixfind-frontend",
-      "buildCommand": "cd frontend && npm install && npm run build",
-      "startCommand": "cd frontend && npm run start",
-      "env": {
-        "NODE_ENV": "production",
-        "NODE_VERSION": "20.11.0",
-        "NEXT_PUBLIC_API_URL": "https://bixfind-api.railway.app"
-      }
-    },
-    {
-      "name": "bixfind-api",
-      "buildCommand": "cd backend && npm install && npm run build",
-      "startCommand": "cd backend && npm start",
-      "env": {
-        "NODE_ENV": "production",
-        "PORT": "5000",
-        "JWT_SECRET": "${JWT_SECRET}",
-        "DATABASE_URL": "${DATABASE_URL}",
-        "FRONTEND_URL": "https://bixfind-frontend.railway.app"
-      }
-    },
-    {
-      "name": "bixfind-postgres",
-      "runtime": "postgresql",
-      "plan": "free"
-    }
-  ]
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "startCommand": "cd frontend && npm run start",
+  "envVariables": {
+    "NODE_ENV": "production",
+    "NODE_VERSION": "20.11.0",
+    "NEXT_PUBLIC_API_URL": "https://bixfind-api.up.railway.app"
+  }
 }
