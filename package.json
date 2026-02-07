@@ -6,12 +6,6 @@
   "scripts": {
     "dev": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
-    "start": "cd frontend && npm run start",
-    "build:backend": "cd backend && npm run build",
-    "start:backend": "cd backend && npm start"
-  },
-  "workspaces": [
-    "frontend",
-    "backend"
-  ]
+    "start": "cd frontend && npm run start"
+  }
 }
