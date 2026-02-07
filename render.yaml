@@ -30,20 +30,21 @@ services:
         value: https://bixfind.onrender.com
       - key: JWT_SECRET
         value: your_jwt_secret_change_in_dashboard
+      - key: DATABASE_URL
+        value: ${bixfind_postgres.connectionString}
       - key: DB_HOST
-        value: localhost
+        value: ${bixfind_postgres.hostname}
       - key: DB_PORT
-        value: 5432
+        value: ${bixfind_postgres.port}
       - key: DB_NAME
         value: bixfind
       - key: DB_USER
-        value: postgres
+        value: ${bixfind_postgres.user}
       - key: DB_PASSWORD
-        value: your_password_change_in_dashboard
+        value: ${bixfind_postgres.password}
 
   - type: pserv
-    name: bixfind-postgres
-    runtime: postgres15
+    name: bixfind_postgres
+    service: postgresql
     plan: free
     region: ohio
-    ipAllowList: []
