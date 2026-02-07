@@ -11,9 +11,6 @@ services:
         value: https://bixfind-api.onrender.com
       - key: NODE_ENV
         value: production
-    routes:
-      - path: /
-        destination: /
 
   - type: web
     name: bixfind-api
