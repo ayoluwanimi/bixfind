@@ -43,13 +43,7 @@ services:
 
   - type: pserv
     name: bixfind-postgres
-    env: postgres
+    runtime: postgres15
     plan: free
     region: ohio
-    envVars:
-      - key: POSTGRES_USER
-        value: postgres
-      - key: POSTGRES_PASSWORD
-        value: your_password_change_in_dashboard
-      - key: POSTGRES_DB
-        value: bixfind
+    ipAllowList: []
