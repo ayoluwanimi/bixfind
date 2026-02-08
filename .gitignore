@@ -7,9 +7,8 @@ node_modules
 /coverage
 
 # Next.js
-/.next/
+.next/
 /out/
-/.next
 *.swp
 *.swo
 *~
@@ -41,9 +40,5 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 # Package managers
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
-
-# TSConfig
-tsconfig.json
