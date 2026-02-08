@@ -1,12 +1,9 @@
 [build]
-command = "cd frontend && npm run build"
-publish = "frontend/.next"
-functions = "frontend/.next/server"
-
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+  command = "cd frontend && npm install && npm run build"
+  publish = "frontend/.next"
 
 [build.environment]
-NODE_VERSION = "20.11.0"
+  NODE_VERSION = "20.11.0"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
