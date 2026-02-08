@@ -1,4 +1,4 @@
-// File: /home/user/bixfind/frontend/app/auth/login/page.tsx
+// File: /app/frontend/app/auth/login/page.tsx
 import * as entry from '../../../../../app/auth/login/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

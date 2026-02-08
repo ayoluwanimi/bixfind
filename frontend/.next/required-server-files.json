@@ -2,7 +2,7 @@
   "version": 1,
   "config": {
     "env": {
-      "NEXT_PUBLIC_API_URL": "https://bixfind-api.onrender.com"
+      "NEXT_PUBLIC_API_URL": ":https://bixfind-api.railway.app}"
     },
     "webpack": null,
     "eslint": {
@@ -101,7 +101,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/home/user/bixfind/frontend",
+    "outputFileTracingRoot": "/app/frontend",
     "experimental": {
       "useSkewCookie": false,
       "cacheLife": {
@@ -160,7 +160,7 @@
       "middlewarePrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 1,
+      "cpus": 3,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptTimeoutInSeconds": 7,
@@ -291,10 +291,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.js",
     "turbopack": {
-      "root": "/home/user/bixfind/frontend"
+      "root": "/app/frontend"
     }
   },
-  "appDir": "/home/user/bixfind/frontend",
+  "appDir": "/app/frontend",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",
