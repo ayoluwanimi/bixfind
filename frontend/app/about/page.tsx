@@ -108,7 +108,10 @@ export default function About() {
       {/* Team Section */}
       <section className="bg-gray-50 py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">Our Team</h2>
+          <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">Meet Our Team</h2>
+          <div className="rounded-lg overflow-hidden shadow-lg mb-12">
+            <img src="/images/team.png" alt="Bixfind Team" className="w-full h-auto" />
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { name: 'Ayokunle Nimi', role: 'Founder & CEO', bio: 'Visionary leader with 10+ years in tech' },

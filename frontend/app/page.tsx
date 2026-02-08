@@ -135,6 +135,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Visual Section with Image */}
+      <section className="max-w-6xl mx-auto px-4 py-20">
+        <div className="rounded-lg overflow-hidden shadow-lg mb-20">
+          <img src="/images/customer-provider.png" alt="Customer and Service Provider" className="w-full h-auto" />
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="bg-gray-50 py-20 px-4">
         <div className="max-w-6xl mx-auto">
