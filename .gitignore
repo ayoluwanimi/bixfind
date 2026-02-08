@@ -42,3 +42,7 @@ lerna-debug.log*
 # Package managers
 yarn.lock
 pnpm-lock.yaml
+-e 
+# Environment files
+*.env
+*.env.*
