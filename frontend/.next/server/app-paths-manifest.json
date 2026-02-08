@@ -1,8 +1,12 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
   "/admin/dashboard/page": "app/admin/dashboard/page.js",
   "/auth/login/page": "app/auth/login/page.js",
   "/auth/signup/page": "app/auth/signup/page.js",
+  "/contact/page": "app/contact/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/provider-dashboard/page": "app/provider-dashboard/page.js",
+  "/support/page": "app/support/page.js"
 }

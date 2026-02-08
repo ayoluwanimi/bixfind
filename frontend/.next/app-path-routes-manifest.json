@@ -1,8 +1,12 @@
 {
   "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
   "/admin/dashboard/page": "/admin/dashboard",
   "/auth/login/page": "/auth/login",
   "/auth/signup/page": "/auth/signup",
+  "/contact/page": "/contact",
   "/dashboard/page": "/dashboard",
-  "/page": "/"
+  "/page": "/",
+  "/provider-dashboard/page": "/provider-dashboard",
+  "/support/page": "/support"
 }

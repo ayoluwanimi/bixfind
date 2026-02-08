@@ -1,121 +1,115 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { LogIn } from 'lucide-react'
+import { loginSchema, LoginFormData } from '../../../lib/validations'
+import { storage } from '../../../lib/storage'
+import { FormInput } from '../../../components/FormInput'
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  })
+
+  const onSubmit = async (data: LoginFormData) => {
     setLoading(true)
     setError('')
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      // Check if user exists in localStorage
+      const allUsers = storage.get('all_users') || []
+      const user = allUsers.find((u: any) => u.email === data.email)
+
+      if (!user) {
+        setError('Invalid email or password')
+        setLoading(false)
+        return
+      }
+
+      // For demo, accept any password
+      storage.setUser({
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        userType: user.userType,
+        verified: user.verified,
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        router.push('/dashboard')
-      } else {
-        setError('Invalid email or password')
-      }
+      // Redirect based on user type
+      const path = user.userType === 'provider' ? '/provider-dashboard' : '/dashboard'
+      router.push(path)
     } catch (err) {
-      setError('An error occurred. Please try again.')
+      setError('Login failed. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#001A4D] to-[#0033A0] flex items-center justify-center px-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Bixfind" className="h-12 w-12 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold gradient-text">Welcome Back</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
+          <LogIn className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+          <h1 className="text-3xl font-bold text-gray-900">Sign In</h1>
+          <p className="text-gray-600 mt-2">Welcome back to Bixfind</p>
         </div>
 
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <FormInput
+            label="Email Address"
+            type="email"
+            placeholder="you@example.com"
+            required
+            {...register('email')}
+            error={errors.email}
+          />
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001A4D]"
-              required
-            />
-          </div>
+          <FormInput
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            required
+            {...register('password')}
+            error={errors.password}
+          />
 
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#001A4D]"
-              required
-            />
-          </div>
-
-          <div className="flex justify-between items-center">
-            <label className="flex items-center">
-              <input type="checkbox" className="w-4 h-4" />
-              <span className="ml-2 text-sm text-gray-600">Remember me</span>
-            </label>
-            <Link href="#" className="text-[#FF1E75] text-sm hover:underline">
-              Forgot password?
-            </Link>
-          </div>
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full btn-primary py-3 font-semibold disabled:opacity-50"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
+
+          <div className="flex items-center justify-between text-sm">
+            <Link href="/auth/forgot-password" className="text-blue-600 hover:underline">
+              Forgot Password?
+            </Link>
+            <Link href="/auth/signup" className="text-blue-600 hover:underline">
+              Create Account
+            </Link>
+          </div>
         </form>
 
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Or continue with</span>
-          </div>
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <p className="text-xs text-gray-500 text-center">
+            Demo: Use any registered email to login
+          </p>
         </div>
-
-        <button className="w-full border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition">
-          Continue with Google
-        </button>
-
-        <p className="text-center text-gray-600 mt-6">
-          Don't have an account?{' '}
-          <Link href="/auth/signup" className="text-[#FF1E75] font-semibold hover:underline">
-            Sign up
-          </Link>
-        </p>
       </div>
     </div>
   )

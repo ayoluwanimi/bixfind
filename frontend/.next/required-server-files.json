@@ -99,7 +99,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/app/frontend",
+    "outputFileTracingRoot": "/home/user/bixfind/frontend",
     "experimental": {
       "useSkewCookie": false,
       "cacheLife": {
@@ -158,7 +158,7 @@
       "middlewarePrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 3,
+      "cpus": 1,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptTimeoutInSeconds": 7,
@@ -289,10 +289,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.js",
     "turbopack": {
-      "root": "/app/frontend"
+      "root": "/home/user/bixfind/frontend"
     }
   },
-  "appDir": "/app/frontend",
+  "appDir": "/home/user/bixfind/frontend",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",

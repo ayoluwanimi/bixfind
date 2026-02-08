@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { Star, Users, Zap, CheckCircle, Search, MapPin } from 'lucide-react'
 
 const categories = [
   { name: 'Plumbing', icon: '🔧' },
@@ -14,31 +15,10 @@ const categories = [
   { name: 'Fitness', icon: '💪' },
 ]
 
-const featuredProviders = [
-  {
-    id: 1,
-    name: 'Pro Plumbing Services',
-    category: 'Plumbing',
-    rating: 4.9,
-    reviews: 187,
-    image: '/api/placeholder/300/200',
-  },
-  {
-    id: 2,
-    name: 'Elite Electrical',
-    category: 'Electrical',
-    rating: 4.8,
-    reviews: 156,
-    image: '/api/placeholder/300/200',
-  },
-  {
-    id: 3,
-    name: 'Sparkle Clean Co.',
-    category: 'Cleaning',
-    rating: 4.7,
-    reviews: 234,
-    image: '/api/placeholder/300/200',
-  },
+const testimonials = [
+  { name: 'John Doe', rating: 5, text: 'Great service! Found the perfect plumber within minutes.' },
+  { name: 'Sarah Smith', rating: 5, text: 'Very professional providers and easy to use platform.' },
+  { name: 'Mike Johnson', rating: 5, text: 'As a provider, I\'ve grown my business significantly.' },
 ]
 
 export default function Home() {
@@ -48,22 +28,22 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="Bixfind" className="h-10 w-10" />
-            <span className="text-2xl font-bold gradient-text">BIXFIND</span>
+            <span className="text-3xl font-bold text-blue-600">BIXFIND</span>
           </div>
           <div className="hidden md:flex gap-8">
-            <a href="#categories" className="text-gray-700 hover:text-[#001A4D]">Browse</a>
-            <a href="#how-it-works" className="text-gray-700 hover:text-[#001A4D]">How it works</a>
-            <a href="#" className="text-gray-700 hover:text-[#001A4D]">Become Provider</a>
+            <a href="#categories" className="text-gray-600 hover:text-gray-900">Services</a>
+            <Link href="/about" className="text-gray-600 hover:text-gray-900">About</Link>
+            <Link href="/support" className="text-gray-600 hover:text-gray-900">Support</Link>
+            <Link href="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
           </div>
           <div className="flex gap-4">
-            <Link href="/auth/login" className="text-[#001A4D] hover:opacity-80">
+            <Link href="/auth/login" className="text-blue-600 hover:text-blue-900 font-semibold">
               Sign In
             </Link>
-            <Link href="/auth/signup" className="btn-primary">
+            <Link href="/auth/signup" className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700">
               Sign Up
             </Link>
           </div>
@@ -71,52 +51,104 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-[#001A4D] to-[#0033A0] text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
-              Find Every Service
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-8">
-              Connect with trusted service providers in your area
-            </p>
+      <section className="bg-gradient-to-r from-blue-600 to-blue-900 text-white py-24 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            Find Every Service
+          </h1>
+          <p className="text-xl md:text-2xl text-blue-100 mb-8">
+            Every Provider, Everywhere
+          </p>
+          
+          {/* Search Bar */}
+          <div className="bg-white rounded-lg shadow-lg p-4 max-w-2xl mx-auto">
+            <div className="flex gap-4 flex-col md:flex-row">
+              <div className="flex-1 flex items-center gap-2">
+                <Search className="w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="What service do you need?"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full outline-none text-gray-900"
+                />
+              </div>
+              <div className="flex-1 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Where?"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full outline-none text-gray-900"
+                />
+              </div>
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg font-semibold transition">
+                Search
+              </button>
+            </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-2 flex flex-col md:flex-row gap-2">
-            <input
-              type="text"
-              placeholder="What service are you looking for?"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-4 py-3 text-gray-800 placeholder-gray-500 focus:outline-none"
-            />
-            <input
-              type="text"
-              placeholder="Your location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="flex-1 px-4 py-3 text-gray-800 placeholder-gray-500 focus:outline-none"
-            />
-            <button className="btn-secondary px-8 py-3 whitespace-nowrap">
-              Search
-            </button>
+          {/* CTA Buttons */}
+          <div className="flex gap-4 justify-center mt-8 flex-col md:flex-row">
+            <Link href="/auth/signup" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+              Get Started as Customer
+            </Link>
+            <Link href="/auth/signup" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
+              Become a Provider
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Featured Categories */}
-      <section id="categories" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Popular Services</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((cat) => (
-              <div
-                key={cat.name}
-                className="bg-white p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer"
-              >
-                <div className="text-4xl mb-4">{cat.icon}</div>
-                <h3 className="font-semibold text-gray-800">{cat.name}</h3>
+      {/* Features Section */}
+      <section className="bg-gray-50 py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">Why Choose Bixfind?</h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { icon: <Zap className="w-12 h-12 text-blue-600" />, title: 'Quick & Easy', desc: 'Find services in seconds' },
+              { icon: <Users className="w-12 h-12 text-green-600" />, title: 'Trusted Providers', desc: 'Verified professionals' },
+              { icon: <CheckCircle className="w-12 h-12 text-orange-600" />, title: 'Guaranteed Quality', desc: 'Quality assurance' },
+              { icon: <Star className="w-12 h-12 text-yellow-600" />, title: 'Best Prices', desc: 'Competitive rates' },
+            ].map((feature, idx) => (
+              <div key={idx} className="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition">
+                <div className="flex justify-center mb-4">{feature.icon}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section id="categories" className="max-w-6xl mx-auto px-4 py-20">
+        <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">Browse Services</h2>
+        <div className="grid md:grid-cols-4 gap-6">
+          {categories.map((cat, idx) => (
+            <div key={idx} className="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg hover:-translate-y-1 transition cursor-pointer">
+              <p className="text-4xl mb-2">{cat.icon}</p>
+              <h3 className="font-bold text-gray-900">{cat.name}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-gray-50 py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">What People Say</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((test, idx) => (
+              <div key={idx} className="bg-white rounded-lg shadow p-6">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(test.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4">"{test.text}"</p>
+                <p className="font-bold text-gray-900">- {test.name}</p>
               </div>
             ))}
           </div>
@@ -124,86 +156,35 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: 1, title: 'Search', desc: 'Find services in your area' },
-              { step: 2, title: 'Compare', desc: 'View providers and ratings' },
-              { step: 3, title: 'Book', desc: 'Schedule your service' },
-              { step: 4, title: 'Enjoy', desc: 'Get your service delivered' },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="w-16 h-16 bg-[#FF1E75] rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600">{item.desc}</p>
+      <section id="how-it-works" className="max-w-6xl mx-auto px-4 py-20">
+        <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">How It Works</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            { step: '1', title: 'Search', desc: 'Find the service you need' },
+            { step: '2', title: 'Compare', desc: 'Review providers & pricing' },
+            { step: '3', title: 'Book', desc: 'Book instantly & pay securely' },
+          ].map((item, idx) => (
+            <div key={idx} className="text-center">
+              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                {item.step}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Providers */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Top Rated Providers</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {featuredProviders.map((provider) => (
-              <div key={provider.id} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                <div className="bg-gray-300 h-48"></div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{provider.name}</h3>
-                  <p className="text-gray-600 mb-4">{provider.category}</p>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-yellow-500">★</span>
-                      <span className="font-semibold ml-1">{provider.rating}</span>
-                      <span className="text-gray-600 text-sm"> ({provider.reviews} reviews)</span>
-                    </div>
-                  </div>
-                  <button className="btn-primary w-full mt-4">View Profile</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">What Customers Say</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: 'Sarah M.', text: 'Found a great plumber within minutes. Service was excellent!', rating: 5 },
-              { name: 'John D.', text: 'Easy to book and the provider was very professional.', rating: 5 },
-              { name: 'Emma L.', text: 'Bixfind made finding a cleaning service so convenient.', rating: 5 },
-            ].map((testimonial, idx) => (
-              <div key={idx} className="bg-gray-50 p-6 rounded-lg">
-                <div className="text-yellow-500 mb-2">
-                  {'★'.repeat(testimonial.rating)}
-                </div>
-                <p className="text-gray-700 mb-4">"{testimonial.text}"</p>
-                <p className="font-semibold">{testimonial.name}</p>
-              </div>
-            ))}
-          </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-gray-600">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-[#FF1E75] to-[#00D84F] text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-xl mb-8 opacity-90">Join thousands of customers finding services today</p>
-          <div className="flex justify-center gap-4">
-            <Link href="/auth/signup" className="bg-white text-[#FF1E75] px-8 py-3 rounded-lg font-bold hover:opacity-90">
-              Sign Up Now
+      <section className="bg-gradient-to-r from-blue-600 to-blue-900 text-white py-16 px-4 mt-20">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+          <p className="text-xl text-blue-100 mb-8">Join thousands of customers and providers on Bixfind</p>
+          <div className="flex gap-4 justify-center flex-col md:flex-row">
+            <Link href="/auth/signup" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+              Sign Up as Customer
             </Link>
-            <Link href="/provider/signup" className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-[#FF1E75]">
+            <Link href="/auth/signup" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600">
               Become a Provider
             </Link>
           </div>
@@ -211,38 +192,42 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#001A4D] text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h4 className="font-bold mb-4">Bixfind</h4>
-              <p className="text-gray-300 text-sm">Find every service, everywhere</p>
+              <h3 className="font-bold text-lg mb-4">Bixfind</h3>
+              <p className="text-gray-400">Find Every Service, Every Provider, Everywhere</p>
             </div>
             <div>
               <h4 className="font-bold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li><a href="#" className="hover:text-white">About Us</a></li>
-                <li><a href="#" className="hover:text-white">Careers</a></li>
-                <li><a href="#" className="hover:text-white">Blog</a></li>
-              </ul>
+              <div className="space-y-2 text-gray-400">
+                <Link href="/about" className="hover:text-white">About Us</Link>
+                <br />
+                <Link href="/contact" className="hover:text-white">Contact</Link>
+                <br />
+                <Link href="/support" className="hover:text-white">Support</Link>
+              </div>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li><a href="#" className="hover:text-white">Terms & Conditions</a></li>
-                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-              </ul>
+              <h4 className="font-bold mb-4">For Providers</h4>
+              <div className="space-y-2 text-gray-400">
+                <Link href="/auth/signup" className="hover:text-white">Become a Provider</Link>
+                <br />
+                <a href="#" className="hover:text-white">How It Works</a>
+              </div>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li><a href="#" className="hover:text-white">Help Center</a></li>
-                <li><a href="#" className="hover:text-white">Contact Us</a></li>
-              </ul>
+              <h4 className="font-bold mb-4">Connect</h4>
+              <div className="space-y-2 text-gray-400">
+                <a href="https://wa.me/1234567890" className="hover:text-white" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <br />
+                <a href="https://t.me/bixfind_support" className="hover:text-white" target="_blank" rel="noopener noreferrer">Telegram</a>
+              </div>
             </div>
           </div>
-          <div className="border-t border-gray-700 pt-8 text-center text-gray-300 text-sm">
-            <p>&copy; 2024 Bixfind. All rights reserved. Find Every Service, Every Provider, Everywhere.</p>
+          <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
+            <p>&copy; 2025 Bixfind. All rights reserved.</p>
           </div>
         </div>
       </footer>
