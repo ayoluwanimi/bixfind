@@ -49,9 +49,12 @@ export default function CustomerDashboard() {
       {/* Header */}
       <nav className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-blue-600">BIXFIND</span>
-            <span className="text-sm text-gray-600">Customer</span>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+            <img src="/logo.png" alt="Bixfind Logo" className="h-12 w-12" />
+            <div>
+              <div className="text-2xl font-bold text-blue-600">BIXFIND</div>
+              <span className="text-xs text-gray-600">Customer</span>
+            </div>
           </Link>
           <button
             onClick={handleLogout}

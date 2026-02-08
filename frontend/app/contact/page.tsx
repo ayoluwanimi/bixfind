@@ -37,8 +37,9 @@ export default function Contact() {
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            BIXFIND
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+            <img src="/logo.png" alt="Bixfind Logo" className="h-12 w-12" />
+            <span className="text-2xl font-bold text-blue-600">BIXFIND</span>
           </Link>
           <div className="space-x-6">
             <Link href="/" className="text-gray-600 hover:text-gray-900">Home</Link>

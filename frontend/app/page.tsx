@@ -30,9 +30,10 @@ export default function Home() {
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+            <img src="/logo.png" alt="Bixfind Logo" className="h-12 w-12" />
             <span className="text-3xl font-bold text-blue-600">BIXFIND</span>
-          </div>
+          </Link>
           <div className="hidden md:flex gap-8">
             <a href="#categories" className="text-gray-600 hover:text-gray-900">Services</a>
             <Link href="/about" className="text-gray-600 hover:text-gray-900">About</Link>

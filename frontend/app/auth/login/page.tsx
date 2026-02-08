@@ -54,61 +54,73 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
-        <div className="text-center mb-8">
-          <LogIn className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-          <h1 className="text-3xl font-bold text-gray-900">Sign In</h1>
-          <p className="text-gray-600 mt-2">Welcome back to Bixfind</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-900">
+      {/* Navigation */}
+      <div className="bg-white/10 border-b border-white/20">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
+            <img src="/logo.png" alt="Bixfind Logo" className="h-12 w-12" />
+            <span className="text-2xl font-bold text-white">BIXFIND</span>
+          </Link>
         </div>
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormInput
-            label="Email Address"
-            type="email"
-            placeholder="you@example.com"
-            required
-            {...register('email')}
-            error={errors.email}
-          />
-
-          <FormInput
-            label="Password"
-            type="password"
-            placeholder="••••••••"
-            required
-            {...register('password')}
-            error={errors.password}
-          />
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
-
-          <div className="flex items-center justify-between text-sm">
-            <Link href="/auth/forgot-password" className="text-blue-600 hover:underline">
-              Forgot Password?
-            </Link>
-            <Link href="/auth/signup" className="text-blue-600 hover:underline">
-              Create Account
-            </Link>
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
+        <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
+          <div className="text-center mb-8">
+            <LogIn className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+            <h1 className="text-3xl font-bold text-gray-900">Sign In</h1>
+            <p className="text-gray-600 mt-2">Welcome back to Bixfind</p>
           </div>
-        </form>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
-            Demo: Use any registered email to login
-          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <FormInput
+              label="Email Address"
+              type="email"
+              placeholder="you@example.com"
+              required
+              {...register('email')}
+              error={errors.email}
+            />
+
+            <FormInput
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              required
+              {...register('password')}
+              error={errors.password}
+            />
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 px-4 rounded-lg transition"
+            >
+              {loading ? 'Signing In...' : 'Sign In'}
+            </button>
+
+            <div className="flex items-center justify-between text-sm">
+              <Link href="/auth/forgot-password" className="text-blue-600 hover:underline">
+                Forgot Password?
+              </Link>
+              <Link href="/auth/signup" className="text-blue-600 hover:underline">
+                Create Account
+              </Link>
+            </div>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <p className="text-xs text-gray-500 text-center">
+              Demo: Use any registered email to login
+            </p>
+          </div>
         </div>
       </div>
     </div>
