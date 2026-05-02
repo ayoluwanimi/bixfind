@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: bixfind-frontend
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: NEXT_PUBLIC_API_URL
+        value: https://bixfind-api.onrender.com
+      - key: NODE_ENV
+        value: production
+
+  - type: web
+    name: bixfind-api
+    env: node
+    region: ohio
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: FRONTEND_URL
+        value: https://bixfind.onrender.com
+      - key: JWT_SECRET
+        value: your_jwt_secret_change_in_dashboard
+      - key: DB_HOST
+        value: your_postgres_host
+      - key: DB_PORT
+        value: 5432
+      - key: DB_NAME
+        value: bixfind
+      - key: DB_USER
+        value: postgres
+      - key: DB_PASSWORD
+        value: your_password_change_in_dashboard

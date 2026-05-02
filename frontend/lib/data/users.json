@@ -1,0 +1,24 @@
+{
+  "test_user": {
+    "createdAt": "2026-04-23T12:00:00Z",
+    "email": "test@bixfind.com",
+    "fullName": "Test User",
+    "password": "07480fb9e85b9396af06f006cf1c95024af2531c65fb505cfbd0add1e2f31573",
+    "phone": "1234567890",
+    "userType": "user",
+    "isActive": true,
+    "isVerified": false,
+    "wallet": { "balance": 0 }
+  },
+  "admin_user": {
+    "createdAt": "2026-04-23T12:00:00Z",
+    "email": "admin@bixfind.com",
+    "fullName": "Admin User",
+    "password": "07480fb9e85b9396af06f006cf1c95024af2531c65fb505cfbd0add1e2f31573",
+    "phone": "1234567890",
+    "userType": "admin",
+    "isActive": true,
+    "isVerified": true,
+    "wallet": { "balance": 0 }
+  }
+}

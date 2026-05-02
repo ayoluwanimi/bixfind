@@ -1,0 +1,85 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20",
+    "env": {
+      "ADMIN_EMAIL": "ayoluwanimi@gmail.com",
+      "ADMIN_PASSWORD": "Community@1997",
+      "SMTP_USER": "ayoluwanimi@gmail.com",
+      "SMTP_PASS": "prwteoxinxkvggmq"
+    }
+  },
+  "hosting": {
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/node_modules/**",
+      "**/.git/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/_next/static/**",
+        "destination": "/_next/static/$1"
+      },
+      {
+        "source": "/profile-site/**",
+        "destination": "/profile-site.html"
+      },
+      {
+        "source": "/provider-dashboard/**",
+        "destination": "/provider-dashboard.html"
+      },
+      {
+        "source": "/website-builder/**",
+        "destination": "/website-builder.html"
+      },
+      {
+        "source": "/dashboard/**",
+        "destination": "/dashboard.html"
+      },
+      {
+        "source": "/admin/**",
+        "destination": "/admin/dashboard.html"
+      },
+      {
+        "source": "/chat/**",
+        "destination": "/chat.html"
+      },
+      {
+        "source": "/support/**",
+        "destination": "/support.html"
+      },
+      {
+        "source": "/contact/**",
+        "destination": "/contact.html"
+      },
+      {
+        "source": "/about/**",
+        "destination": "/about.html"
+      },
+      {
+        "source": "/auth/login",
+        "destination": "/auth/login.html"
+      },
+      {
+        "source": "/auth/signup",
+        "destination": "/auth/signup.html"
+      },
+      {
+        "source": "/auth/forgot-password",
+        "destination": "/auth/forgot-password.html"
+      },
+      {
+        "source": "/api/**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

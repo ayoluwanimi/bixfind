@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "startCommand": "cd frontend && npm run start",
+  "envVariables": {
+    "NODE_ENV": "production",
+    "NODE_VERSION": "20.11.0",
+    "NEXT_PUBLIC_API_URL": "https://bixfind-api.up.railway.app"
+  }
+}
