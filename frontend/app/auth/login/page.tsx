@@ -50,7 +50,7 @@ interface CryptoLite {
       }
       
       // 2. Try Supabase (if configured)
-      const { supabase, isSupabaseConfigured } = await import('../../lib/supabase')
+      const { supabase, isSupabaseConfigured } = await import('../../../lib/supabase')
       if (isSupabaseConfigured()) {
         try {
           const result = await supabase.loginWithEmail(data.email, data.password)
@@ -69,7 +69,7 @@ interface CryptoLite {
       }
       
       // 3. Fallback: local data (for demo)
-      const { fallbackUsers, ADMIN_CREDENTIALS } = await import('../../lib/supabase-config')
+      const { fallbackUsers, ADMIN_CREDENTIALS } = await import('../../../lib/supabase-config')
       const allUsers = { ...fallbackUsers }
       
       for (const [userId, user] of Object.entries(allUsers) as [string, any][]) {

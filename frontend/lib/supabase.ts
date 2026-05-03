@@ -300,6 +300,21 @@ export const trackActivity = async (userId: string | null, action: string, entit
   await realtimeDb.push('activity', { userId, action, entityType, entityId, details, timestamp: Date.now() })
 }
 
+export const loginWithEmail = async (email: string, password: string) => {
+  if (!supabase) {
+    return { error: { message: 'Supabase not configured' } }
+  }
+  try {
+    const { data, error } = await supabase.from('users').select('*').eq('email', email.toLowerCase()).single()
+    if (error || !data) {
+      return { error: { message: 'Invalid credentials' } }
+    }
+    return { data, error: null, session: { access_token: 'supabase_token' } }
+  } catch (e) {
+    return { error: { message: 'Login failed' } }
+  }
+}
+
 export const sendNotification = async (userId: string, notification: {
   title: string
   message: string

@@ -204,7 +204,7 @@ export default function Home() {
     // Try Supabase first, then static
     const loadData = async () => {
       try {
-        const { supabase, isSupabaseConfigured } = await import('./lib/supabase')
+        const { supabase, isSupabaseConfigured } = await import('../lib/supabase')
         if (isSupabaseConfigured()) {
           const { data: websites } = await supabase.getWebsites()
           if (websites?.length > 0) {
