@@ -76,7 +76,7 @@ interface CryptoLite {
         if (user.email?.toLowerCase() === data.email.toLowerCase()) {
           // SHA256 hash check using Web Crypto API
           const msgBuffer = new TextEncoder().encode(data.password)
-          const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+          const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer.buffer)
           const hashArray = Array.from(new Uint8Array(hashBuffer))
           const hashed = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
           
