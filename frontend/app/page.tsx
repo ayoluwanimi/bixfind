@@ -204,9 +204,9 @@ export default function Home() {
     // Try Supabase first, then static
     const loadData = async () => {
       try {
-        const { supabase, isSupabaseConfigured } = await import('../lib/supabase')
+        const { isSupabaseConfigured, getWebsites } = await import('../lib/supabase')
         if (isSupabaseConfigured()) {
-          const { data: websites } = await supabase.getWebsites()
+          const { data: websites } = await getWebsites()
           if (websites?.length > 0) {
             setFeaturedProviders(websites.slice(0, 12))
             setPlatformStats({ users: 50, providers: websites.length, categories: 25, rating: '4.5' })
