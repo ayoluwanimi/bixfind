@@ -315,6 +315,18 @@ export const loginWithEmail = async (email: string, password: string) => {
   }
 }
 
+export const getWebsites = async () => {
+  if (!supabase) {
+    return { data: null, error: { message: 'Supabase not configured' } }
+  }
+  try {
+    const { data, error } = await supabase.from('websites').select('*').eq('is_published', true)
+    return { data, error }
+  } catch (e) {
+    return { data: null, error: { message: 'Failed to fetch websites' } }
+  }
+}
+
 export const sendNotification = async (userId: string, notification: {
   title: string
   message: string

@@ -50,10 +50,10 @@ interface CryptoLite {
       }
       
       // 2. Try Supabase (if configured)
-      const { supabase, isSupabaseConfigured } = await import('../../../lib/supabase')
+      const { isSupabaseConfigured, loginWithEmail } = await import('../../../lib/supabase')
       if (isSupabaseConfigured()) {
         try {
-          const result = await supabase.loginWithEmail(data.email, data.password)
+          const result = await loginWithEmail(data.email, data.password)
           if (result.data) {
             storage.setUser(result.data)
             storage.setToken(result.session?.access_token || 'supabase_token')
