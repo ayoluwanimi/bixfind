@@ -41,7 +41,7 @@ interface Props {
 
 export default function Card({ title = "${title}", description = "${description}", badge = "${badge}", className = '' }: Props) {
   return (
-    <div className={\`bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/50 ${className}\`}>
+    <div className={"bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/50 " + className}>
       {badge && (
         <span className="inline-block px-3 py-1 text-xs font-semibold text-white bg-secondary rounded-full mb-3">
           {badge}
@@ -96,11 +96,7 @@ export default function Button({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={\`
-        font-medium rounded-lg transition-all duration-200 
-        disabled:opacity-50 disabled:cursor-not-allowed
-        ${variants[variant]} ${sizes[size]} ${className}
-      \`}
+      className={"font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed " + variants[variant] + " " + sizes[size] + " " + className}
     >
       {children || label}
     </button>
@@ -130,7 +126,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   ...props
 }, ref) => {
   return (
-    <div className={\`w-full ${className}\`}>
+    <div className={"w-full " + className}>
       {label && (
         <label className="block text-sm font-medium text-slate-300 mb-2">{label}</label>
       )}
@@ -138,13 +134,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         ref={ref}
         type={type}
         placeholder={placeholder}
-        className={\`
-          w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg
-          text-white placeholder-slate-500
-          focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-transparent
-          transition-all duration-200
-          ${error ? 'border-red-500 focus:ring-red-500/50' : ''}
-        \`}
+        className={"w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-transparent transition-all duration-200 " + (error ? 'border-red-500 focus:ring-red-500/50' : '')}
         {...props}
       />
       {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
@@ -190,7 +180,7 @@ export default function Modal({ isOpen, onClose, title = "${title}", width = "${
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className={\`relative bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl w-full ${width} max-h-[90vh] overflow-y-auto\`}>
+      <div className={"relative bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl w-full " + width + " max-h-[90vh] overflow-y-auto"}>
         <div className="flex items-center justify-between p-6 border-b border-slate-700">
           <h2 className="text-xl font-bold text-white">{title}</h2>
           <button onClick={onClose} className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
@@ -226,7 +216,7 @@ interface TableProps {
 
 export default function Table({ columns, data, onRowClick, className = '' }: TableProps) {
   return (
-    <div className={\`overflow-x-auto rounded-xl border border-slate-700 ${className}\`}>
+    <div className={"overflow-x-auto rounded-xl border border-slate-700 " + className}>
       <table className="w-full">
         <thead className="bg-slate-800/50">
           <tr>
@@ -242,7 +232,7 @@ export default function Table({ columns, data, onRowClick, className = '' }: Tab
             <tr
               key={idx}
               onClick={() => onRowClick?.(row)}
-              className={\`bg-slate-900 hover:bg-slate-800 transition-colors ${onRowClick ? 'cursor-pointer' : ''}\`}
+              className={"bg-slate-900 hover:bg-slate-800 transition-colors " + (onRowClick ? 'cursor-pointer' : '')}
             >
               {columns.map((col) => (
                 <td key={col.key} className="px-6 py-4 text-sm text-slate-300">
@@ -270,15 +260,15 @@ export default function Table({ columns, data, onRowClick, className = '' }: Tab
 export const generateComponent = (type: string, config: ComponentConfig, outputPath?: string) => {
   const template = componentTemplates[type]
   if (!template) {
-    throw new Error(`Component type "${type}" not found. Available: ${Object.keys(componentTemplates).join(', ')}`)
+    throw new Error('Component type "' + type + '" not found. Available: ' + Object.keys(componentTemplates).join(', '))
   }
 
   const componentCode = template(config, bixfindTheme)
 
   return {
-    name: `${type}.tsx`,
+    name: type + '.tsx',
     code: componentCode,
-    path: outputPath || `./components/${type}.tsx`
+    path: outputPath || './components/' + type + '.tsx'
   }
 }
 
