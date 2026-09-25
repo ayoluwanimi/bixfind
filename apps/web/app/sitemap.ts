@@ -10,9 +10,10 @@ async function fetchAll(path: string, select: string): Promise<any[]> {
     const headers = { apikey: key, Authorization: `Bearer ${key}` }
     const out: any[] = []
     let from = 0
+    const joiner = path.includes('?') ? '&' : '?'
     // Supabase REST caps at 1000 rows — page through
     while (true) {
-      const res = await fetch(`${url}/rest/v1/${path}?select=${select}&order=updated_at.desc&offset=${from}&limit=1000`, { headers, next: { revalidate: 3600 } })
+      const res = await fetch(`${url}/rest/v1/${path}${joiner}select=${select}&order=updated_at.desc&offset=${from}&limit=1000`, { headers, next: { revalidate: 3600 } })
       if (!res.ok) break
       const batch = await res.json()
       if (!Array.isArray(batch) || batch.length === 0) break
