@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "lockfileVersion": 1,
+  "skills": {
+    "nextjs-rules": {
+      "version": "1.0.0",
+      "source": "github",
+      "resolved": "https://github.com/vercel/next.js/tree/main/docs",
+      "format": "opencode",
+      "subtype": "skill",
+      "installedPath": ".skills/nextjs-rules/SKILL.md"
+    },
+    "shadcn-ui": {
+      "version": "1.0.0",
+      "source": "github",
+      "resolved": "https://github.com/shadcn-ui/ui/tree/main/apps/www/content/docs",
+      "format": "opencode",
+      "subtype": "skill",
+      "installedPath": ".skills/shadcn-ui/SKILL.md"
+    },
+    "vercel-ai-sdk-rules": {
+      "version": "1.0.0",
+      "source": "github",
+      "resolved": "https://github.com/vercel/ai-sdk/tree/main/docs",
+      "format": "opencode",
+      "subtype": "skill",
+      "installedPath": ".skills/vercel-ai-sdk-rules/SKILL.md"
+    },
+    "general-awesome-rules": {
+      "version": "1.0.0",
+      "source": "github",
+      "resolved": "https://github.com/anthropics/claude-code/tree/main/.claude/skills",
+      "format": "opencode",
+      "subtype": "skill",
+      "installedPath": ".skills/general-awesome-rules/SKILL.md"
+    }
+  },
+  "generated": "2026-05-20T00:00:00.000Z"
+}

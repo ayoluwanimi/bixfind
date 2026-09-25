@@ -1,6 +1,23 @@
 {
-  "name": "bixfind-marketplace",
-  "version": "1.0.0",
-  "description": "Multi-vendor service marketplace - Find Every Service, Every Provider, Everywhere",
-  "private": true
+  "name": "bixfind",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Bixfind — Multi-vendor service marketplace",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.9.3"
+  }
 }

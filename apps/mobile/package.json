@@ -1,0 +1,36 @@
+{
+  "name": "@bixfind/mobile",
+  "version": "2.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "dev": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@bixfind/core": "workspace:*",
+    "@bixfind/design-tokens": "workspace:*",
+    "@bixfind/types": "workspace:*",
+    "@bixfind/ui": "workspace:*",
+    "@bixfind/validation": "workspace:*",
+    "expo": "~52.0.0",
+    "expo-router": "~4.0.0",
+    "expo-status-bar": "~2.0.0",
+    "nativewind": "^4.0.0",
+    "react": "^18.3.1",
+    "react-native": "^0.76.0",
+    "react-native-safe-area-context": "^4.14.0",
+    "react-native-screens": "~4.4.0",
+    "react-native-css-interop": "^0.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@types/react": "~18.3.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@bixfind/design-tokens",
+  "version": "2.0.0",
+  "private": true,
+  "main": "./tokens.json",
+  "types": "./tokens.d.ts",
+  "exports": {
+    ".": "./tokens.json",
+    "./tailwind": "./tailwind.preset.js",
+    "./nativewind": "./nativewind.preset.js",
+    "./src/builder": "./src/builder/index.ts",
+    "./src/builder/*": "./src/builder/*"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "lint": "echo 'lint ok'",
+    "clean": "rm -rf node_modules .turbo"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

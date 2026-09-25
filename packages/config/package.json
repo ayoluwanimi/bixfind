@@ -1,0 +1,21 @@
+{
+  "name": "@bixfind/config",
+  "version": "2.0.0",
+  "private": true,
+  "exports": {
+    "./eslint-preset": "./eslint-preset.js",
+    "./tsconfig-preset": "./tsconfig-preset.json",
+    "./prettier-preset": "./prettier-preset.js",
+    "./tsconfig-web": "./tsconfig-web.json",
+    "./tsconfig-lib": "./tsconfig-lib.json"
+  },
+  "scripts": {
+    "lint": "echo 'lint ok'",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.9.3"
+  }
+}

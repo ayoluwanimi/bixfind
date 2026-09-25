@@ -46,3 +46,17 @@ pnpm-lock.yaml
 # Environment files
 *.env
 *.env.*
+
+.vercel
+.env*
+.support-data/
+
+-e 
+# Tooling artifacts (do not ship)
+.turbo/
+.opencode/
+build-output.log
+.freebuff/
+apps/web/lib/data/users.json
+apps/web/.vercel.bak/
+apps/web/.vercel.bak2/

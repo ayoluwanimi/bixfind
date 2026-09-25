@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [{ "name": "next" }],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@bixfind/ui": ["../../packages/ui/src"],
+      "@bixfind/core": ["../../packages/core/src"],
+      "@bixfind/validation": ["../../packages/validation/src"],
+      "@bixfind/types": ["../../packages/types/src"],
+      "@bixfind/design-tokens": ["../../packages/design-tokens"],
+      "@bixfind/design-tokens/*": ["../../packages/design-tokens/*"],
+      "@bixfind/ai": ["../../packages/ai/src"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": ["node_modules", "scripts"]
+}
