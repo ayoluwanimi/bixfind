@@ -6,6 +6,7 @@ import { ChatProviderWrapper } from '@/components/ChatProviderWrapper'
 import InactivityProvider from '@/components/InactivityProvider'
 import { Providers } from '@/components/Providers'
 import NetworkStatus from '@/components/NetworkStatus'
+import ReferralCapture from '@/components/ReferralCapture'
 
 export const metadata: Metadata = {
   title: 'Bixfind - Find Every Service, Every Provider, Everywhere',
@@ -58,6 +59,7 @@ export default function RootLayout({
           Reg no: 9491480
         </div>
         <Providers>
+          <ReferralCapture />
           <NotificationProvider>
             <ChatProviderWrapper>
               <InactivityProvider>

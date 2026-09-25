@@ -39,7 +39,7 @@ export async function GET() {
     if (uuidIds.length > 0) {
       const idList = uuidIds.join(',')
       const provRes = await fetch(
-        `${supabaseUrl}/rest/v1/providers?select=id,business_name,business_phone,logo_url,primary_category,city,state,description,address,is_verified&id=in.(${idList})`,
+        `${supabaseUrl}/rest/v1/providers?select=id,business_name,business_phone,logo_url,primary_category,city,state,description,address,is_verified,tier&id=in.(${idList})`,
         { headers }
       )
       if (provRes.ok) {
@@ -85,6 +85,7 @@ export async function GET() {
         reviews: 0,
         hasWebsite: !!slug,
         isVerified: prov.is_verified || false,
+        tier: prov.tier || '',
       }
     })
 

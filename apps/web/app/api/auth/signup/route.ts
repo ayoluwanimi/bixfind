@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { email, password, fullName, name, phone, userType, role } = await request.json()
+    const { email, password, fullName, name, phone, userType, role, referredBy } = await request.json()
     const displayName = fullName || name
 
     if (!email || !password || !displayName) {
@@ -71,6 +71,7 @@ export async function POST(request: Request) {
       phone: phone || '',
       role: effectiveUserType,
       user_type: effectiveUserType,
+      referred_by: typeof referredBy === 'string' && /^[A-Za-z0-9_-]{2,40}$/.test(referredBy) ? referredBy : null,
     }
 
     const admin = getAdminClient()

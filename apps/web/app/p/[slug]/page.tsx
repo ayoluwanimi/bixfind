@@ -301,8 +301,20 @@ export default async function PublicProfilePage({ params }: PageProps) {
     slug: site.slug,
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: businessName,
+    ...(site.tagline || site.hero_tagline || provider?.description ? { description: site.tagline || site.hero_tagline || provider?.description } : {}),
+    ...(site.logo_url || provider?.logo_url ? { image: site.logo_url || provider?.logo_url } : {}),
+    ...((site.phone || provider?.business_phone || site.email || provider?.business_email) ? { telephone: site.phone || provider?.business_phone, email: site.email || provider?.business_email } : {}),
+    ...((site.address || provider?.address || provider?.city || provider?.state) ? { address: { '@type': 'PostalAddress', streetAddress: site.address || provider?.address, addressLocality: provider?.city, addressRegion: provider?.state, addressCountry: 'NG' } } : {}),
+    url: `https://bixfind.indevs.in/p/${slug}`,
+  }
+
   return (
     <div className="min-h-screen" style={{ fontFamily: theme.fontFamily }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <MobileNav
         slug={slug}
         navLinks={visibleBlocks

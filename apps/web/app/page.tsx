@@ -9,6 +9,8 @@ import { Star, Users, Zap, CheckCircle, Search, MapPin, ArrowRight, Shield, Cloc
 import { toast } from 'sonner'
 import { storage } from '@/lib/storage'
 import NotificationDropdown from '@/components/NotificationDropdown'
+import ShaderGradientBanner from '@/components/showcase/ShaderGradientBanner'
+import TierBadge from '@/components/TierBadge'
 import { realtimeDb } from '@/lib/supabase'
 import { FadeIn, FadeInLeft, FadeInRight, ScaleIn, StaggerContainer, StaggerItem, HoverCard, PageTransition } from '@/components/animations'
 
@@ -1087,6 +1089,22 @@ const handleCategoryClick = async (category: string) => {
             </div>
           </motion.div>
 
+          {/* Builder CTA — the "free website in 10 minutes" hook */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.5 }}
+            className="mt-6"
+          >
+            <a
+              href="/provider/website"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 text-blue-200 text-sm font-medium hover:from-blue-500/30 hover:to-purple-500/30 hover:text-white transition-all"
+            >
+              <Globe className="w-4 h-4" />
+              Own a business? Get your <span className="font-semibold text-white">free website</span> in 10 minutes →
+            </a>
+          </motion.div>
+
           {/* Quick Category Tags */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -1121,7 +1139,7 @@ const handleCategoryClick = async (category: string) => {
             </div>
             <div className="flex items-center gap-2">
               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-              <span className="text-white/70 text-sm">4.9/5 Rating</span>
+              <span className="text-white/70 text-sm">Escrow Protected</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5 text-blue-400" />
@@ -1355,6 +1373,7 @@ const handleCategoryClick = async (category: string) => {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate">{provider.name}</h3>
+                            <TierBadge tier={provider.tier} verified={provider.isVerified} />
                             <span className="inline-flex items-center gap-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold px-1.5 py-0.5 rounded-full flex-shrink-0">
                               <Star className="w-3 h-3 fill-current" />
                               Featured
@@ -1589,6 +1608,7 @@ const handleCategoryClick = async (category: string) => {
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
+        <ShaderGradientBanner height={0} />
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
         <motion.div className="absolute top-0 left-0 w-72 h-72 bg-white rounded-full blur-3xl opacity-10" animate={{ x: [0, 30, 0], y: [0, -30, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} />
         <motion.div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500 rounded-full blur-3xl opacity-20" animate={{ x: [0, -40, 0], y: [0, 40, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }} />

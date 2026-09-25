@@ -903,6 +903,31 @@ export default function ProviderWebsitePage() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-gray-900 border border-white/10 rounded-2xl p-6 w-full max-w-md">
             <h2 className="text-lg font-semibold text-white mb-4">Publish Your Website</h2>
+            {(() => {
+              // Publish checklist: complete sites convert far better
+              const heroBlock = blocks.find(b => b.sectionId === 'hero')
+              const aboutBlock = blocks.find(b => b.sectionId === 'about')
+              const servicesBlock = blocks.find(b => b.sectionId === 'services')
+              const checks = [
+                { ok: !!logoUrl, label: 'Add your logo' },
+                { ok: !!(heroBlock?.content?.title && !/^welcome$/i.test(String(heroBlock.content.title || ''))), label: 'Set your business name in the hero' },
+                { ok: !!(aboutBlock?.content?.content && !/^about your business/i.test(String(aboutBlock.content.content || ''))), label: 'Write your about text' },
+                { ok: ((servicesBlock?.content?.services as any[]) || []).filter((s: any) => s.title && !/^service \d/i.test(s.title)).length >= 3, label: 'List at least 3 services' },
+              ]
+              const done = checks.filter(c => c.ok).length
+              return (
+                <div className="mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
+                  <p className="text-xs text-white/60 mb-2">Site strength: <span className={done >= 3 ? 'text-green-400 font-semibold' : 'text-yellow-400 font-semibold'}>{done}/4</span></p>
+                  <ul className="space-y-1">
+                    {checks.map(c => (
+                      <li key={c.label} className={`text-xs flex items-center gap-1.5 ${c.ok ? 'text-green-400' : 'text-white/50'}`}>
+                        <Check className="w-3 h-3" /> {c.ok ? c.label : `${c.label}`}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            })()}
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-white/60 mb-1 block">Website Slug</label>
@@ -948,7 +973,12 @@ export default function ProviderWebsitePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Check out my website: https://bixfind.indevs.in/p/${slug}`)}`, '_blank')}
+                    onClick={() => {
+                      const hero = blocks.find(b => b.sectionId === 'hero')?.content
+                      const bizName = hero?.title || 'My business'
+                      const text = `🎉 ${bizName} is now online!\n\nBrowse our services and reach us directly:\nhttps://bixfind.indevs.in/p/${slug}\n\n— powered by Bixfind`
+                      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
+                    }}
                   >
                     <Share2 className="w-4 h-4 mr-1" /> WhatsApp
                   </Button>

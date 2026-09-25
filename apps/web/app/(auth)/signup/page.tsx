@@ -99,6 +99,7 @@ export default function Signup() {
           fullName: data.fullName,
           phone: data.phone,
           userType: data.userType,
+          referredBy: typeof window !== 'undefined' ? localStorage.getItem('bixfind_referral') || undefined : undefined,
         }),
       })
 
