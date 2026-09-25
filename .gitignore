@@ -40,8 +40,8 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 # Package managers
-yarn.lock
-pnpm-lock.yaml
+
+
 -e 
 # Environment files
 *.env
@@ -60,3 +60,4 @@ build-output.log
 apps/web/lib/data/users.json
 apps/web/.vercel.bak/
 apps/web/.vercel.bak2/
+# Lockfiles are committed for deterministic CI builds
