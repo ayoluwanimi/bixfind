@@ -107,6 +107,59 @@ function buildLegacyRenderBlocks(site: any, provider: any): any[] {
   return blocks
 }
 
+/**
+ * Fill placeholder or empty block content from legacy columns / provider
+ * profile. Render-time only: nothing is written back to the database.
+ */
+function overlayProviderData(blocks: any[], site: any, provider: any): any[] {
+  const overlay = (content: any, fallbacks: Record<string, unknown>) => {
+    const next = { ...content }
+    for (const [key, fb] of Object.entries(fallbacks)) {
+      if (isPlaceholder(next[key])) next[key] = fb
+    }
+    return next
+  }
+
+  return blocks.map((b) => {
+    const sid = b.sectionId || b.section_id
+    const content = b.content || {}
+
+    if (sid === 'hero') {
+      return {
+        ...b,
+        content: overlay(content, {
+          title: site.title || site.hero_title || provider?.business_name || '',
+          tagline: site.hero_tagline || site.tagline || provider?.description || '',
+          ctaText: site.phone || provider?.business_phone ? 'Contact Us' : '',
+          ctaLink:
+            (site.phone || provider?.business_phone) && (isPlaceholder(content.ctaLink) || content.ctaLink === '#')
+              ? `tel:${site.phone || provider?.business_phone}`
+              : undefined,
+        }),
+      }
+    }
+    if (sid === 'contact') {
+      return {
+        ...b,
+        content: overlay(content, {
+          email: site.email || provider?.business_email || '',
+          phone: site.phone || provider?.business_phone || '',
+          address: site.address || provider?.address || '',
+        }),
+      }
+    }
+    if (sid === 'about') {
+      return {
+        ...b,
+        content: overlay(content, {
+          content: site.bio || provider?.description || '',
+        }),
+      }
+    }
+    return b
+  })
+}
+
 /** Resolve the effective palette, honouring builder custom colors. */
 function resolvePalette(site: any): { palette: string[]; isCustom: boolean } {
   const custom = typeof site.custom_colors === 'string' ? safeParse(site.custom_colors) : site.custom_colors
@@ -127,6 +180,27 @@ function safeParse(val: any): any {
   } catch {
     return null
   }
+}
+
+/**
+ * Builder defaults that were accidentally published by an old bug.
+ * Treated as empty so real provider data (legacy columns / profile) wins.
+ */
+const PLACEHOLDER_PATTERNS = [
+  /^welcome$/i,
+  /^your (business )?name$/i,
+  /^your tagline( here)?$/i,
+  /^tagline here$/i,
+  /^get started$/i,
+  /^about your business\.?\.?\.?$/i,
+  /^experience the best with /i,
+]
+
+function isPlaceholder(val: unknown): boolean {
+  if (typeof val !== 'string') return false
+  const s = val.trim()
+  if (!s) return true
+  return PLACEHOLDER_PATTERNS.some((p) => p.test(s))
 }
 
 // ─── SEO ───────────────────────────────────────────────────────
@@ -213,6 +287,10 @@ export default async function PublicProfilePage({ params }: PageProps) {
   }))
   if (blocks.length === 0) {
     blocks = buildLegacyRenderBlocks(site, provider)
+  } else {
+    // Overlay: fill placeholder/empty content with real provider data
+    // (render-time only — the stored blocks are never modified)
+    blocks = overlayProviderData(blocks, site, provider)
   }
 
   const visibleBlocks = blocks.filter((b: any) => b.visible)
