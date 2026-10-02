@@ -31,7 +31,23 @@ async function getWebsiteData(slug: string) {
       .single()
 
     if (error || !data) return null
-    return data
+
+    // Real reviews for this provider (read-only; empty when none exist)
+    let reviews: any[] = []
+    try {
+      const provider = Array.isArray(data.providers) ? data.providers[0] : data.providers
+      if (provider) {
+        const { data: reviewRows } = await admin
+          .from('reviews')
+          .select('rating, title, body, created_at, is_verified')
+          .eq('provider_id', data.provider_id)
+          .order('created_at', { ascending: false })
+          .limit(6)
+        reviews = reviewRows || []
+      }
+    } catch {}
+
+    return { ...data, reviews }
   } catch {
     return null
   }
@@ -301,7 +317,7 @@ export default async function PublicProfilePage({ params }: PageProps) {
     slug: site.slug,
   }
 
-  const jsonLd = {
+  const jsonLd: any = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: businessName,
@@ -310,6 +326,17 @@ export default async function PublicProfilePage({ params }: PageProps) {
     ...((site.phone || provider?.business_phone || site.email || provider?.business_email) ? { telephone: site.phone || provider?.business_phone, email: site.email || provider?.business_email } : {}),
     ...((site.address || provider?.address || provider?.city || provider?.state) ? { address: { '@type': 'PostalAddress', streetAddress: site.address || provider?.address, addressLocality: provider?.city, addressRegion: provider?.state, addressCountry: 'NG' } } : {}),
     url: `https://bixfind.indevs.in/p/${slug}`,
+  }
+
+  // aggregateRating only when real reviews exist — never fabricated
+  const reviewList: any[] = Array.isArray((site as any).reviews) ? (site as any).reviews : []
+  if (reviewList.length > 0) {
+    const avg = reviewList.reduce((s: number, r: any) => s + (Number(r.rating) || 0), 0) / reviewList.length
+    jsonLd.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: Math.round(avg * 10) / 10,
+      reviewCount: reviewList.length,
+    }
   }
 
   return (
@@ -345,6 +372,33 @@ export default async function PublicProfilePage({ params }: PageProps) {
           </section>
         ))}
       </main>
+
+      {/* Real customer reviews (hidden until reviews exist) */}
+      {(site as any).reviews?.length > 0 && (
+        <section className="max-w-4xl mx-auto px-4 pb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center" style={{ fontFamily: theme.headingFontFamily }}>
+            Reviews
+          </h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {(site as any).reviews.map((r: any, i: number) => (
+              <div key={i} className="p-5 bg-white rounded-xl shadow-lg border border-gray-100">
+                <div className="flex gap-0.5 mb-2">
+                  {Array.from({ length: 5 }).map((_, si) => (
+                    <span key={si} className={`text-sm ${si < (Number(r.rating) || 0) ? 'text-yellow-400' : 'text-gray-300'}`}>
+                      ★
+                    </span>
+                  ))}
+                </div>
+                {(r.title || r.body) && <p className="text-sm italic text-gray-600">&quot;{r.title || r.body}&quot;</p>}
+                <p className="text-xs font-semibold text-gray-900 mt-2 flex items-center gap-1">
+                  Verified customer
+                  {r.is_verified && <span className="text-green-600" aria-label="Escrow-verified">✓</span>}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <footer className="bg-gray-900 text-white py-10 px-4">
         <div className="max-w-4xl mx-auto text-center">

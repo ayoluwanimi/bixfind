@@ -268,7 +268,19 @@ export default function ProviderBookingsPage() {
                       <button onClick={() => setConfirmDialog({ booking, action: 'completed' })} className="px-3 py-1.5 rounded-xl bg-green-500/20 text-green-400 hover:bg-green-500/30 text-xs font-medium transition-colors">Complete</button>
                     )}
                     {booking.status === 'completed' && (
-                      <span className="px-3 py-1.5 text-xs text-white/30">Done</span>
+                      <>
+                        <span className="px-3 py-1.5 text-xs text-white/30">Done</span>
+                        <button
+                          onClick={() => {
+                            const text = `Hi ${booking.customerName}, thank you for choosing us on Bixfind! 🙏\n\nCould you take 30 seconds to rate your experience? It helps other customers find us:\nhttps://bixfind.indevs.in/dashboard`
+                            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
+                          }}
+                          className="px-3 py-1.5 rounded-xl bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 text-xs font-medium transition-colors"
+                          title="Opens WhatsApp with a ready-to-send review request"
+                        >
+                          Ask for review
+                        </button>
+                      </>
                     )}
                     {booking.status === 'cancelled' && (
                       <span className="px-3 py-1.5 text-xs text-white/30">Cancelled</span>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Users, Building2, DollarSign, Globe, TrendingUp, Activity, Shield, Clock, ArrowRight, UserPlus, Wallet, RefreshCw, FileText, CheckCircle2, XCircle, AlertTriangle, Star, Search, Loader2, Trash2 } from 'lucide-react'
 import { storage } from '@/lib/storage'
 import { auditLogger } from '@/lib/security'
+import WeeklyMetricsWidget from '@/components/admin/WeeklyMetricsWidget'
 
 export default function AdminOverview() {
   const router = useRouter()
@@ -183,6 +184,9 @@ export default function AdminOverview() {
           </div>
         ))}
       </div>
+
+      {/* Weekly growth metrics + referral link builder */}
+      <WeeklyMetricsWidget />
 
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="bg-white/5 border border-white/10 rounded-xl p-6">

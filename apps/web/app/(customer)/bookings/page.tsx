@@ -4,8 +4,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, Clock, MapPin, X, Check, Filter, AlertTriangle } from 'lucide-react'
+import { Calendar, Clock, MapPin, X, Check, Filter, AlertTriangle, Star } from 'lucide-react'
 import { storage } from '@/lib/storage'
+import ReviewDialog from '@/components/ReviewDialog'
 
 const statusFilters = ['All', 'Upcoming', 'In Progress', 'Completed', 'Cancelled']
 
@@ -15,6 +16,24 @@ export default function BookingsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [cancelId, setCancelId] = useState<string | null>(null)
   const [toast, setToast] = useState('')
+  const [reviewFor, setReviewFor] = useState<any>(null)
+  const [reviewedIds, setReviewedIds] = useState<string[]>([])
+
+  const loadReviewed = useCallback(() => {
+    try {
+      setReviewedIds(JSON.parse(localStorage.getItem('reviewed_bookings') || '[]'))
+    } catch {
+      setReviewedIds([])
+    }
+  }, [])
+
+  const markReviewed = useCallback((id: string) => {
+    try {
+      const next = Array.from(new Set([...reviewedIds, id]))
+      localStorage.setItem('reviewed_bookings', JSON.stringify(next))
+      setReviewedIds(next)
+    } catch {}
+  }, [reviewedIds])
 
   const showToast = useCallback((msg: string) => {
     setToast(msg)
@@ -31,8 +50,9 @@ export default function BookingsPage() {
     const user = storage.getUser()
     if (!user) { router.push('/login'); return }
     setBookings(storage.get('user_bookings') || [])
+    loadReviewed()
     return () => window.removeEventListener('error', errorHandler)
-  }, [router])
+  }, [router, loadReviewed])
 
   const handleCancel = () => {
     if (!cancelId) return
@@ -166,6 +186,20 @@ export default function BookingsPage() {
                         <X className="w-4 h-4" /> Cancel Booking
                       </button>
                     )}
+                    {booking.status === 'completed' && (
+                      reviewedIds.includes(booking.id) ? (
+                        <span className="text-xs text-green-400 flex items-center gap-1">
+                          <Star className="w-3.5 h-3.5 fill-current" /> Reviewed
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => setReviewFor(booking)}
+                          className="text-sm text-yellow-400 hover:text-yellow-300 transition flex items-center gap-1"
+                        >
+                          <Star className="w-4 h-4" /> Rate experience
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -173,6 +207,19 @@ export default function BookingsPage() {
           )}
         </div>
       </div>
+
+      {/* Review Dialog */}
+      {reviewFor && (
+        <ReviewDialog
+          booking={{ id: reviewFor.id, providerName: reviewFor.providerName, service: reviewFor.service }}
+          onClose={() => setReviewFor(null)}
+          onSubmitted={() => {
+            markReviewed(reviewFor.id)
+            setReviewFor(null)
+            showToast('Thanks for your review!')
+          }}
+        />
+      )}
 
       {/* Cancel Confirmation Modal */}
       <AnimatePresence>
