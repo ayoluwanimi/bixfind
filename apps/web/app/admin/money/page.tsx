@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { DollarSign, Wallet, TrendingUp, Percent, ArrowUpRight, ArrowDownLeft, CheckCircle2, XCircle, Clock, Banknote, RefreshCw, Loader2, CreditCard, Eye, EyeOff, Save, Globe } from 'lucide-react'
 import { storage } from '@/lib/storage'
+import { PLATFORM_FEE_PERCENT } from '@bixfind/core'
 
 export default function AdminMoneyPage() {
   const router = useRouter()
@@ -50,7 +51,7 @@ export default function AdminMoneyPage() {
   }, [router])
 
   const totalRevenue = [wallet, ...allWallets].reduce((sum: number, w: any) => sum + (w?.balance || 0), 0)
-  const platformFeeRate = 0.05
+  const platformFeeRate = PLATFORM_FEE_PERCENT / 100
 
   const allTransactions: any[] = []
   ;[wallet, ...allWallets].forEach((w: any) => {

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Users, Building2, DollarSign, Globe, TrendingUp, Activity, Shield, Clock, ArrowRight, UserPlus, Wallet, RefreshCw, FileText, CheckCircle2, XCircle, AlertTriangle, Star, Search, Loader2, Trash2 } from 'lucide-react'
 import { storage } from '@/lib/storage'
 import { auditLogger } from '@/lib/security'
+import { PLATFORM_FEE_PERCENT } from '@bixfind/core'
 import WeeklyMetricsWidget from '@/components/admin/WeeklyMetricsWidget'
 
 export default function AdminOverview() {
@@ -145,7 +146,7 @@ export default function AdminOverview() {
   }, [])
 
   const totalRevenue = [wallet, ...allWallets].reduce((sum: number, w: any) => sum + (w?.balance || 0), 0)
-  const platformFee = 0.05
+  const platformFee = PLATFORM_FEE_PERCENT / 100
   const recentSignups = [...users, ...providers].sort((a: any, b: any) => new Date(b.createdAt || b.joinedDate || 0).getTime() - new Date(a.createdAt || a.joinedDate || 0).getTime()).slice(0, 5)
 
   if (!admin) return <div className="flex items-center justify-center min-h-[50vh]"><p className="text-white/60">Loading...</p></div>

@@ -1,4 +1,4 @@
-import { EscrowState, EntryType, PLATFORM_FEE_PERCENT, toKobo, type Kobo } from './types'
+import { EscrowState, EntryType, calculatePlatformFee, calculateProviderShare, toKobo, type Kobo } from './types'
 
 export interface EscrowOperation {
   bookingId: string
@@ -22,8 +22,9 @@ export function buildEscrowRelease(amountKobo: Kobo): {
   providerShareKobo: Kobo
   escrowState: EscrowState
 } {
-  const fee = toKobo(Math.floor(amountKobo * PLATFORM_FEE_PERCENT / 100))
-  const providerShare = toKobo(amountKobo - fee)
+  // Single fee formula — same one releaseEscrow() uses (no drift)
+  const fee = calculatePlatformFee(amountKobo)
+  const providerShare = calculateProviderShare(amountKobo)
   return {
     platformFeeKobo: fee,
     providerShareKobo: providerShare,

@@ -35,6 +35,9 @@ export default function BookingsPage() {
     } catch {}
   }, [reviewedIds])
 
+  // Server truth (works across devices) with localStorage fallback for legacy rows
+  const isReviewed = (b: any) => !!b.reviewed || reviewedIds.includes(b.id)
+
   const showToast = useCallback((msg: string) => {
     setToast(msg)
     setTimeout(() => setToast(''), 3000)
@@ -49,20 +52,52 @@ export default function BookingsPage() {
     window.addEventListener('error', errorHandler)
     const user = storage.getUser()
     if (!user) { router.push('/login'); return }
-    setBookings(storage.get('user_bookings') || [])
+
+    // Real bookings from the DB — the old localStorage key ('user_bookings')
+    // was never written by any flow, so it always showed an empty list.
+    // localStorage is kept only as an offline/legacy fallback.
+    const legacy = storage.get('user_bookings') || []
+    setBookings(legacy)
+    ;(async () => {
+      try {
+        const res = await fetch('/api/bookings')
+        if (!res.ok) return
+        const json = await res.json()
+        if (Array.isArray(json.bookings)) setBookings(json.bookings)
+      } catch {}
+    })()
+
     loadReviewed()
     return () => window.removeEventListener('error', errorHandler)
   }, [router, loadReviewed])
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (!cancelId) return
-    const updated = bookings.map(b =>
-      b.id === cancelId ? { ...b, status: 'cancelled' } : b
-    )
-    setBookings(updated)
-    storage.set('user_bookings', updated)
+    const target = bookings.find(b => b.id === cancelId)
+    const id = cancelId
     setCancelId(null)
-    showToast('Booking cancelled')
+    try {
+      const res = await fetch(`/api/bookings/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'cancel' }),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(json.error || 'Could not cancel booking')
+      const updated = bookings.map(b =>
+        b.id === id ? { ...b, status: 'cancelled', escrowState: null } : b
+      )
+      setBookings(updated)
+      // Only legacy (locally created) rows are mirrored back to localStorage
+      if (!target?.rawStatus) storage.set('user_bookings', updated)
+      showToast(
+        target?.escrowState === 'HELD'
+          ? 'Booking cancelled — your held payment has been refunded'
+          : 'Booking cancelled'
+      )
+    } catch (e: any) {
+      showToast(e?.message || 'Could not cancel booking')
+    }
   }
 
   const filtered = activeFilter === 'All'
@@ -150,7 +185,7 @@ export default function BookingsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">
-                        {booking.service.charAt(0)}
+                        {(booking.service || 'B').charAt(0).toUpperCase()}
                       </div>
                       <div>
                         <h3 className="text-lg font-bold">{booking.service}</h3>
@@ -158,25 +193,31 @@ export default function BookingsPage() {
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-4 mt-3 text-sm text-white/40">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {new Date(booking.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {new Date(booking.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {booking.location}
-                      </span>
+                      {booking.date && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {new Date(booking.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                      )}
+                      {booking.date && (
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {new Date(booking.date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      )}
+                      {booking.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {booking.location}
+                        </span>
+                      )}
                     </div>
                     {booking.notes && (
                       <p className="text-sm text-white/30 mt-2 italic">"{booking.notes}"</p>
                     )}
                   </div>
                   <div className="text-right flex flex-col items-end gap-2">
-                    <p className="text-2xl font-bold">&#x20A6;{booking.amount.toLocaleString()}</p>
+                    <p className="text-2xl font-bold">&#x20A6;{Number(booking.amount || 0).toLocaleString()}</p>
                     {statusBadge(booking.status)}
                     {booking.status === 'upcoming' && (
                       <button
@@ -187,7 +228,7 @@ export default function BookingsPage() {
                       </button>
                     )}
                     {booking.status === 'completed' && (
-                      reviewedIds.includes(booking.id) ? (
+                      isReviewed(booking) ? (
                         <span className="text-xs text-green-400 flex items-center gap-1">
                           <Star className="w-3.5 h-3.5 fill-current" /> Reviewed
                         </span>

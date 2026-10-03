@@ -23,7 +23,14 @@ export enum EscrowState {
   REFUNDED = 'REFUNDED',
 }
 
-export const PLATFORM_FEE_PERCENT = 10
+/**
+ * Platform fee charged on escrow release, as a whole-number percentage.
+ * This is the value actually used by releaseEscrow() (it writes `commission`
+ * onto the booking) — Admin → System's "platformFee" setting and the admin
+ * dashboards must display this same number. The admin UI shows 5%, so the
+ * charged fee must be 5% too; change both together.
+ */
+export const PLATFORM_FEE_PERCENT = 5
 
 export function calculatePlatformFee(amountKobo: Kobo): Kobo {
   return toKobo(Math.floor(amountKobo * PLATFORM_FEE_PERCENT / 100))

@@ -35,6 +35,7 @@ export async function GET() {
 
     let providerMap = new Map<string, any>()
     let websiteMap = new Map<string, any>()
+    let ratingMap = new Map<string, { sum: number; count: number }>()
 
     if (uuidIds.length > 0) {
       const idList = uuidIds.join(',')
@@ -59,11 +60,29 @@ export async function GET() {
           websites.forEach((w: any) => websiteMap.set(w.provider_id, w))
         }
       }
+
+      // Real review aggregates — the homepage must never fabricate ratings
+      const revRes = await fetch(
+        `${supabaseUrl}/rest/v1/reviews?select=provider_id,rating&provider_id=in.(${idList})`,
+        { headers }
+      )
+      if (revRes.ok) {
+        const revs = await revRes.json()
+        if (Array.isArray(revs)) {
+          revs.forEach((r: any) => {
+            const agg = ratingMap.get(r.provider_id) || { sum: 0, count: 0 }
+            agg.sum += Number(r.rating) || 0
+            agg.count += 1
+            ratingMap.set(r.provider_id, agg)
+          })
+        }
+      }
     }
 
     const providers = featured.map((f: any) => {
       const prov = providerMap.get(f.provider_id) || {}
       const mw = websiteMap.get(f.provider_id) || {}
+      const agg = ratingMap.get(f.provider_id)
 
       const businessName = f.business_name || prov.business_name || 'Provider'
       // Only expose a real website slug — never a fabricated one that 404s
@@ -81,15 +100,24 @@ export async function GET() {
         city: f.city || prov.city || '',
         state: f.state || prov.state || '',
         address: prov.address || '',
-        rating: 0,
-        reviews: 0,
+        rating: agg && agg.count ? Math.round((agg.sum / agg.count) * 10) / 10 : 0,
+        reviews: agg ? agg.count : 0,
         hasWebsite: !!slug,
         isVerified: prov.is_verified || false,
         tier: prov.tier || '',
       }
     })
 
-    return NextResponse.json({ providers })
+    // Drop placeholder/empty rows (e.g. name "User" with no website, phone,
+    // logo, or category) so the homepage only shows real, actionable providers
+    const PLACEHOLDER_NAME = /^(user|provider|unknown|n\/a|test|admin)$/i
+    const visible = providers.filter((p: any) => {
+      const name = String(p.name || '').trim()
+      if (!name || PLACEHOLDER_NAME.test(name)) return false
+      return !!(p.slug || p.phone || p.logoUrl || p.tagline || p.service)
+    })
+
+    return NextResponse.json({ providers: visible })
   } catch {
     return NextResponse.json({ providers: [] })
   }
