@@ -4,8 +4,6 @@ import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
 /**
  * GET /api/bookings — the signed-in customer's real bookings from the DB.
  * The customer bookings page previously read a localStorage key that no flow
