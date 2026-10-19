@@ -41,15 +41,15 @@ export async function moderateImage(imageUrl: string): Promise<ModerationResult>
       body: JSON.stringify({ input: [{ image_url: imageUrl }] }),
     })
 
-    const data = await res.json()
+    const data = (await res.json()) as { results?: Array<{ flagged?: boolean; categories?: Record<string, boolean> }> }
     const result = data.results?.[0]
 
     if (!result || !result.flagged) {
       return { text: imageUrl, flagged: false, categories: [], action: "pass" }
     }
 
-    const flaggedCategories = Object.entries(result.categories)
-      .filter(([_, val]) => val)
+    const flaggedCategories = Object.entries(result.categories ?? {})
+      .filter(([, val]) => val)
       .map(([key]) => key)
 
     const hardBlock = ["sexual", "hate", "violence", "self-harm"]

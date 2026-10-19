@@ -8,7 +8,7 @@ export {
   useSendMessage,
   useMarkAsRead,
 } from "./hooks/useChat"
-export type { Message, Conversation } from "./hooks/useChat"
+export type { Message, MessageAttachment, Conversation } from "./hooks/useChat"
 export {
   useNotifications,
   useNotificationCount,

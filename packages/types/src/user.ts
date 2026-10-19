@@ -1,3 +1,5 @@
+import type { GeoLocation /*, WorkingHours */ } from './common'
+
 export interface User {
   id: string
   email: string

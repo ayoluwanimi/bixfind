@@ -242,6 +242,9 @@ importers:
         specifier: ^4.3.6
         version: 4.4.3
     devDependencies:
+      '@types/node':
+        specifier: '18'
+        version: 18.19.130
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -260,6 +263,12 @@ importers:
 
   packages/core:
     dependencies:
+      '@bixfind/ai':
+        specifier: workspace:^
+        version: link:../ai
+      '@bixfind/design-tokens':
+        specifier: workspace:^
+        version: link:../design-tokens
       '@bixfind/types':
         specifier: workspace:*
         version: link:../types
@@ -279,6 +288,12 @@ importers:
         specifier: ^4.3.6
         version: 4.4.3
     devDependencies:
+      '@types/node':
+        specifier: '18'
+        version: 18.19.130
+      '@types/react':
+        specifier: '18'
+        version: 18.3.29
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -297,6 +312,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@bixfind/core':
+        specifier: workspace:^
+        version: link:../core
       '@bixfind/design-tokens':
         specifier: workspace:*
         version: link:../design-tokens
@@ -330,10 +348,19 @@ importers:
       react-dom-confetti:
         specifier: ^0.2.0
         version: 0.2.0(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.71.1
+        version: 7.76.1(react@18.3.1)
+      sonner:
+        specifier: ^1.7.1
+        version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.1
     devDependencies:
+      '@types/node':
+        specifier: '18'
+        version: 18.19.130
       '@types/react':
         specifier: ^18.2.46
         version: 18.3.29

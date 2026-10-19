@@ -18,7 +18,7 @@ async function flwFetch<T>(
     ...options,
     headers: { ...getHeaders(), ...(options.headers as Record<string, string>) },
   })
-  const json = await res.json()
+  const json = (await res.json()) as { status?: string; message?: string }
   if (json.status !== 'success') {
     throw new Error(json.message ?? 'Flutterwave request failed')
   }

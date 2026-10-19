@@ -2,10 +2,11 @@
 
 import { useState, useRef } from "react"
 import { cn } from "../../lib/utils"
+import type { MessageAttachment } from "@bixfind/core"
 import { Send, Image, Mic, Square, Loader2 } from "lucide-react"
 
 export interface MessageInputProps {
-  onSend: (body: string, attachments?: { type: "image" | "voice"; url: string; duration?: number }[]) => void
+  onSend: (body: string, attachments?: MessageAttachment[]) => void
   isPending?: boolean
   className?: string
   placeholder?: string

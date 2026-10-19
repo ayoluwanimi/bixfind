@@ -10,6 +10,7 @@
     "clean": "rm -rf node_modules"
   },
   "dependencies": {
+    "@bixfind/core": "workspace:^",
     "@bixfind/design-tokens": "workspace:*",
     "@bixfind/validation": "workspace:*",
     "@dnd-kit/core": "^6.3.1",
@@ -21,9 +22,12 @@
     "lucide-react": "^0.563.0",
     "react": "^18.3.1",
     "react-dom-confetti": "^0.2.0",
+    "react-hook-form": "^7.71.1",
+    "sonner": "^1.7.1",
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
+    "@types/node": "18",
     "@types/react": "^18.2.46",
     "typescript": "^5.9.3"
   }

@@ -33,10 +33,10 @@ const DEFAULT_OPTIONS: UseSearchOptions = {
 async function fetchSearch(params: URLSearchParams): Promise<SearchResult> {
   const res = await fetch(`/api/search?${params.toString()}`)
   if (!res.ok) {
-    const body = await res.json().catch(() => null)
+    const body = (await res.json().catch(() => null)) as { error?: string } | null
     throw new Error(body?.error || `Search failed: ${res.status}`)
   }
-  return res.json()
+  return res.json() as Promise<SearchResult>
 }
 
 export function useSearch(opts: UseSearchOptions = {}): UseSearchReturn {

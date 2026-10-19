@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import BookServiceButton from '@/components/BookServiceButton'
 
 async function getService(id: string) {
   try {
@@ -19,6 +20,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = await getService(id)
   if (!service) notFound()
 
+  const currencies: Record<string, string> = { NGN: '₦', USD: '$', GBP: '£' }
+  const symbol = currencies[service.currency] || ''
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-12">
@@ -29,11 +33,18 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             <p>{service.description}</p>
           </div>
           {service.price && (
-            <p className="text-2xl font-bold text-blue-600 mb-6">₦{Number(service.price).toLocaleString()}</p>
+            <p className="text-2xl font-bold text-blue-600 mb-6">{symbol}{Number(service.price).toLocaleString()}</p>
           )}
+          <BookServiceButton
+            serviceId={service.id}
+            serviceTitle={service.name || 'Service'}
+            providerName={service.provider_name || slug}
+            price={Number(service.price) || 0}
+            currency={service.currency || 'NGN'}
+          />
           {service.phone && (
-            <a href={`tel:${service.phone}`} className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">
-              Book Now
+            <a href={`tel:${service.phone}`} className="ml-3 text-sm text-gray-500 hover:text-gray-700">
+              or call {service.phone}
             </a>
           )}
         </div>

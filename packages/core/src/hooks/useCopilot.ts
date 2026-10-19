@@ -114,7 +114,7 @@ export function useCopilot(opts: UseCopilotOptions = {}): UseCopilotReturn {
           throw new Error(`Request failed: ${res.status}`)
         }
 
-        const data = await res.json()
+        const data = (await res.json()) as { message?: { content?: string }; response?: string; text?: string }
         const responseText = data.message?.content || data.response || data.text || "I couldn't process that."
 
         const assistantMsg: CopilotMessage = {

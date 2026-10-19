@@ -41,10 +41,10 @@ const MARK_READ_KEY = "mark-read"
 async function fetchFromApi<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, options)
   if (!res.ok) {
-    const body = await res.json().catch(() => null)
+    const body = (await res.json().catch(() => null)) as { error?: string } | null
     throw new Error(body?.error || `Request failed: ${res.status}`)
   }
-  return res.json()
+  return res.json() as Promise<T>
 }
 
 export function useConversations(userId: string | undefined) {

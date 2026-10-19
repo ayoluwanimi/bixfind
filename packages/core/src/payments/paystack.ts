@@ -18,7 +18,7 @@ async function paystackFetch<T>(
     ...options,
     headers: { ...getHeaders(), ...(options.headers as Record<string, string>) },
   })
-  const json = await res.json()
+  const json = (await res.json()) as { status?: boolean; message?: string }
   if (!res.ok || json.status === false) {
     throw new Error(json.message ?? 'Paystack request failed')
   }

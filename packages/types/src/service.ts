@@ -1,3 +1,5 @@
+import type { GeoLocation } from './common'
+
 export interface Service {
   id: string
   providerId: string

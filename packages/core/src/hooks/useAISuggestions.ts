@@ -45,11 +45,11 @@ export function useAISuggestions(opts: UseAISuggestionsOptions = {}): UseAISugge
 
         if (!res.ok) throw new Error(`Suggestions failed: ${res.status}`)
 
-        const data = await res.json()
+        const data = (await res.json()) as { text?: string }
         let parsed: SuggestionItem[]
 
         try {
-          parsed = JSON.parse(data.text)
+          parsed = JSON.parse(data.text || '')
         } catch {
           parsed = [
             { label: "Browse all services", query: "", category: null, emoji: "🔍" },

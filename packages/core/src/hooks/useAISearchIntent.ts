@@ -60,7 +60,7 @@ export function useAISearchIntent(opts: UseAISearchIntentOptions = {}): UseAISea
           throw new Error(`Classification failed: ${res.status}`)
         }
 
-        const data: SearchIntent = await res.json()
+        const data = (await res.json()) as SearchIntent
         data.searchText = data.searchText || query
 
         setIntent(data)

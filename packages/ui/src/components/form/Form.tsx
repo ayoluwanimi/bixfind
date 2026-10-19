@@ -2,19 +2,19 @@ import { createContext, useContext, useId, type HTMLAttributes } from "react"
 import type { FieldValues, UseFormReturn } from "react-hook-form"
 
 type FormContextValue<TFieldValues extends FieldValues = FieldValues> = {
-  form: UseFormReturn<TFieldValues>
+  form: UseFormReturn<FieldValues>
 }
 
 const FormContext = createContext<FormContextValue | undefined>(undefined)
 
-export interface FormProps<TFieldValues extends FieldValues> extends HTMLAttributes<HTMLFormElement> {
+export interface FormProps<TFieldValues extends FieldValues> extends Omit<HTMLAttributes<HTMLFormElement>, 'onSubmit'> {
   form: UseFormReturn<TFieldValues>
   onSubmit?: (values: TFieldValues) => void
 }
 
 export function Form<TFieldValues extends FieldValues>({ form, onSubmit, children, ...props }: FormProps<TFieldValues>) {
   return (
-    <FormContext.Provider value={{ form }}>
+    <FormContext.Provider value={{ form: form as UseFormReturn<FieldValues> }}>
       <form onSubmit={onSubmit ? form.handleSubmit(onSubmit) : undefined} {...props}>
         {children}
       </form>

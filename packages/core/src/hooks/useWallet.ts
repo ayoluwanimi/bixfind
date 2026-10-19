@@ -10,10 +10,10 @@ const PAYOUTS_KEY = ["payouts"]
 async function fetchApi<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, options)
   if (!res.ok) {
-    const body = await res.json().catch(() => null)
+    const body = (await res.json().catch(() => null)) as { error?: string } | null
     throw new Error(body?.error || `Request failed: ${res.status}`)
   }
-  return res.json()
+  return res.json() as Promise<T>
 }
 
 export function useWallet() {

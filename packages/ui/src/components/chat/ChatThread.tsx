@@ -5,13 +5,13 @@ import { cn } from "../../lib/utils"
 import { MessageBubble } from "./MessageBubble"
 import { MessageInput } from "./MessageInput"
 import { Loader2, ArrowDown } from "lucide-react"
-import type { Message } from "@bixfind/core"
+import type { Message, MessageAttachment } from "@bixfind/core"
 
 export interface ChatThreadProps {
   messages: Message[]
   currentUserId: string
   conversationName?: string
-  onSend: (body: string, attachments?: { type: "image" | "voice"; url: string; duration?: number }[]) => void
+  onSend: (body: string, attachments?: MessageAttachment[]) => void
   onTranslate?: (messageId: string) => void
   isSending?: boolean
   isLoading?: boolean
@@ -66,7 +66,7 @@ export function ChatThread({
           </div>
         ) : (
           messages.map((msg, i) => {
-            const isOwn = msg.sender_id === currentUserId || msg.pending
+            const isOwn = msg.sender_id === currentUserId || !!msg.pending
             const showAvatar =
               !isOwn &&
               (i === 0 || messages[i - 1]?.sender_id !== msg.sender_id)

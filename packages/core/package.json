@@ -10,6 +10,8 @@
     "clean": "rm -rf node_modules"
   },
   "dependencies": {
+    "@bixfind/ai": "workspace:^",
+    "@bixfind/design-tokens": "workspace:^",
     "@bixfind/types": "workspace:*",
     "@bixfind/validation": "workspace:*",
     "@tanstack/react-query": "^5.62.0",
@@ -18,6 +20,8 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/node": "18",
+    "@types/react": "18",
     "typescript": "^5.9.3"
   }
 }
