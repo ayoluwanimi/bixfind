@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
+import { noticeSearchEngines } from '@/lib/seo'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -146,6 +147,8 @@ export async function POST(request: Request) {
 
       if (error) return NextResponse.json({ error: `Publish failed: ${error.message}` }, { status: 500 })
       await audit(admin, userId, 'website_published', slug)
+      // Best-effort: refresh the sitemap and ping engines about the new page
+      await noticeSearchEngines(`/p/${slug}`)
       return NextResponse.json({ success: true, slug, url: `/p/${slug}` })
     }
 
@@ -158,6 +161,8 @@ export async function POST(request: Request) {
 
     if (error) return NextResponse.json({ error: `Publish failed: ${error.message}` }, { status: 500 })
     await audit(admin, userId, 'website_published', slug)
+    // Best-effort: refresh the sitemap and ping engines about the new page
+    await noticeSearchEngines(`/p/${slug}`)
     return NextResponse.json({ success: true, slug, url: `/p/${slug}`, id: created.id })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

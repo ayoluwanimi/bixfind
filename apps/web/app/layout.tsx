@@ -8,7 +8,16 @@ import { Providers } from '@/components/Providers'
 import NetworkStatus from '@/components/NetworkStatus'
 import ReferralCapture from '@/components/ReferralCapture'
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://bixfind.indevs.in'
+
 export const metadata: Metadata = {
+  // Anchor for relative OpenGraph/Twitter URLs — avoids per-page warnings
+  metadataBase: new URL(APP_URL),
+  // Google Search Console ownership verification (set the env var after
+  // generating the token in Search Console — zero effect while unset)
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION } }
+    : {}),
   title: 'Bixfind - Find Every Service, Every Provider, Everywhere',
   description: 'Discover and book trusted service providers in Nigeria. Find plumbers, electricians, caterers, barbers, and more near you.',
   keywords: 'service providers Nigeria, find services, local services, plumber, electrician, caterer, barber, Nigeria marketplace',

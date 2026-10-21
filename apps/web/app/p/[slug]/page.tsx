@@ -3,6 +3,7 @@ import { getTemplateById, getFontPairById, getSectionById } from '@bixfind/desig
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getBaseUrl } from '@/lib/seo'
 import MobileNav from './mobile-nav'
 
 function formatPrice(n: unknown): string {
@@ -245,15 +246,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const ogImage = seo.ogImage || site.banner_url || (hero.backgroundType === 'image' ? hero.backgroundImage : '') || undefined
 
+  const title = seo.title || `${businessName} | Bixfind`
+  const ogDescription =
+    `${String(description)}`.slice(0, 260) +
+    (String(description).includes('Bixfind') ? '' : ' — listed on Bixfind, Nigeria\'s service marketplace.')
+
   return {
-    title: seo.title || `${businessName} | Bixfind`,
+    title,
     description: String(description).slice(0, 300),
     keywords: seo.keywords ? String(seo.keywords).split(',').map((k: string) => k.trim()).filter(Boolean) : undefined,
+    alternates: { canonical: `${getBaseUrl()}/p/${slug}` },
     openGraph: {
-      title: seo.title || `${businessName} | Bixfind`,
-      description: String(description).slice(0, 300),
+      title,
+      description: ogDescription.slice(0, 300),
       type: 'website',
+      url: `${getBaseUrl()}/p/${slug}`,
+      siteName: 'Bixfind',
       images: ogImage ? [{ url: String(ogImage) }] : undefined,
+    },
+    twitter: {
+      card: ogImage ? 'summary_large_image' : 'summary',
+      title,
+      description: ogDescription.slice(0, 300),
     },
     robots: { index: true, follow: true },
   }
@@ -317,15 +331,24 @@ export default async function PublicProfilePage({ params }: PageProps) {
     slug: site.slug,
   }
 
+  const siteUrl = `${getBaseUrl()}/p/${slug}`
   const jsonLd: any = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
+    '@id': siteUrl,
     name: businessName,
     ...(site.tagline || site.hero_tagline || provider?.description ? { description: site.tagline || site.hero_tagline || provider?.description } : {}),
     ...(site.logo_url || provider?.logo_url ? { image: site.logo_url || provider?.logo_url } : {}),
     ...((site.phone || provider?.business_phone || site.email || provider?.business_email) ? { telephone: site.phone || provider?.business_phone, email: site.email || provider?.business_email } : {}),
     ...((site.address || provider?.address || provider?.city || provider?.state) ? { address: { '@type': 'PostalAddress', streetAddress: site.address || provider?.address, addressLocality: provider?.city, addressRegion: provider?.state, addressCountry: 'NG' } } : {}),
-    url: `https://bixfind.indevs.in/p/${slug}`,
+    url: siteUrl,
+    // Search-graph association: this business is part of the Bixfind platform
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Bixfind',
+      url: getBaseUrl(),
+    },
+    sameAs: [getBaseUrl(), `${getBaseUrl()}/showcase`],
   }
 
   // aggregateRating only when real reviews exist — never fabricated

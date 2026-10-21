@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+import { getBaseUrl } from '@/lib/seo'
 
 async function getWebsiteData(slug: string) {
   try {
@@ -25,6 +27,25 @@ async function getServices(providerId: string) {
     }
   } catch {}
   return []
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const website = await getWebsiteData(slug)
+  const name =
+    website?.title ||
+    (Array.isArray(website?.providers) ? website.providers[0]?.business_name : website?.providers?.business_name) ||
+    slug
+  const title = `${name} — Services | Bixfind`
+  const description = `Services offered by ${name} on Bixfind. Browse and book trusted work from ${name}.`
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `${getBaseUrl()}/p/${slug}/services` },
+    openGraph: { title, description, url: `${getBaseUrl()}/p/${slug}/services`, siteName: 'Bixfind', type: 'website' },
+    robots: { index: true, follow: true },
+  }
 }
 
 export default async function ServicesPage({ params }: { params: Promise<{ slug: string }> }) {
